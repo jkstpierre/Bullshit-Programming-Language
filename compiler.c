@@ -374,7 +374,7 @@ void compile_program(const program_t *program) {
 				fputs("printf(\"%c\", memory[y][x]);\n\n", file);
 				break;
 			case CMD_IN_HEX:
-				fputs("scanf(\" %x\", &memory[y][x]);\n\n", file);
+				fputs("scanf(\"%hhx\", &memory[y][x]);\n\n", file);
 				break;
 			case CMD_OUT_HEX:
 				fputs("printf(\"%x\", memory[y][x]);\n\n", file);
