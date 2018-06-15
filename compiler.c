@@ -60,6 +60,8 @@ int main(int argc, char *args[]) {
 					compile_program(&prgm);
 					
 					printf(TEXT_COLOR_RESET "%s compiled successfully!\n", prgm.name);
+					
+					delete_program(&prgm);	// Free memory of program
 				}
 			}
 		}
@@ -403,4 +405,15 @@ void compile_program(const program_t *program) {
 	
 	printf("%s\n", sys_cmd);
 	system(sys_cmd);	// Compile the code
+	
+	sys_cmd[0] = '\0';
+	strcpy(sys_cmd, "rm -f ");
+	strcat(sys_cmd, source_file);
+	system(sys_cmd);	// Delete C file
+}
+
+void delete_program(program_t *program) {
+	program->length = 0;
+	free(program->cmds);
+	program->cmds = NULL;
 }

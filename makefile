@@ -15,6 +15,12 @@ local:
 	$(CC) -c $(SRC)
 	$(CC) $(C_FLAGS) -o $(EXE) $(OBJ)
 	rm -f $(OBJ)
+	
+install: local
+	cp -f $(EXE) /usr/bin/$(EXE)
+	
+uninstall:
+	rm -f /usr/bin/$(EXE)
 
 clean:
 	rm -f $(OBJ)
