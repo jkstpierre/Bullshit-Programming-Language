@@ -31,18 +31,22 @@
 #define CMD_RIGHT	'>'
 #define CMD_NOT		'!'
 #define CMD_INVERT	'~'
+#define CMD_PICKUP	'+'
+#define CMD_DROP	'-'
 #define CMD_LOOP_S	'['
 #define CMD_LOOP_E	']'
 #define CMD_IN_CHR	','
 #define CMD_OUT_CHR	'.'
 #define CMD_IN_HEX	';'
 #define CMD_OUT_HEX	':'
+#define COMMENT 	'/'
 
 
 // DATA STRUCTURES //
 
 /*Data structure to hold instruction set*/
 typedef struct program_t {
+	char name[128];
 	size_t length;
 	char *cmds;
 } program_t;

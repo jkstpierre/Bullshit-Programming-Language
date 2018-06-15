@@ -2,7 +2,7 @@
 #Author: Joseph St. Pierre
 #Year: 2018
 
-SRC = $(wildcard *.c)
+SRC = compiler.c
 OBJ = $(SRC:.c=.o)
 
 CC = gcc
