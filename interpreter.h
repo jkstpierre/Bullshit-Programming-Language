@@ -19,6 +19,11 @@
 #define ERROR_FILE_NOT_FOUND -1
 #define ERROR_PROGRAM_SYNTAX -2
 
+#define TEXT_COLOR_PREFIX "\033"
+#define TEXT_COLOR_RED TEXT_COLOR_PREFIX "[1;31m"
+#define TEXT_COLOR_CYAN TEXT_COLOR_PREFIX "[1;36m"
+#define TEXT_COLOR_RESET TEXT_COLOR_PREFIX "[0m"
+
 
 // DATA STRUCTURES //
 
@@ -42,6 +47,9 @@ const char *get_extension(const char *filepath);
 
 /*Generate program from input file*/
 program_t create_program(char *filepath, int *error_code, syntax_logs_t *logs);
+
+/*Check syntax validity*/
+int check_syntax(const program_t *program, syntax_logs_t *logs);
 
 /*Destroy a program and free resources*/
 void destroy_program(program_t *program);
