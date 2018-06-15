@@ -1,4 +1,4 @@
-#BullShit! Interpreter Makefile
+#BullShit! Compiler Makefile
 #Author: Joseph St. Pierre
 #Year: 2018
 
