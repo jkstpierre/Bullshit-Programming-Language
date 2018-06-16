@@ -14,8 +14,11 @@ Sincerely,
 ## Language Overview
 ### Computational Process
 In Bull$hit!, programs consist of the manipulation of three distinct variables:
-1. A square 2D array of 32-bit signed integers of size $N^2$
-2. Test2
+1. A square 2D array of 32-bit signed integers of size N^2 to be specified at the start of the program. This array plays the role of main memory for the program, and every cell is initialized to zero.
+2. A (y,x) tuple representing the index of the cell in memory currently being pointed to.
+3. A 32-bit signed integer called *curr_value* to be used for arithmetic.
+
+
 
 
 ### Syntax
