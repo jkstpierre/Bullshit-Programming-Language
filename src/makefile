@@ -12,7 +12,7 @@ EXE = bs
 C_FLAGS = -std=c99
 
 local:
-	$(CC) -c $(SRC)
+	$(CC) $(C_FLAGS) -c $(SRC)
 	$(CC) $(C_FLAGS) -o $(EXE) $(OBJ)
 	rm -f $(OBJ)
 	
