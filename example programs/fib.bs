@@ -7,7 +7,7 @@
 //		to print. Outputs a space delimited list of the corresponding size containing
 //		the requested fibonacci numbers in decimal format
 
-####	// Create 4x4 memory matrix
+####	// Create a 4x4 memory matrix
 
 // Get number of fibonacci numbers to print from user
 >v		// Move to cell 1 1
