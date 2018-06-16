@@ -14,10 +14,14 @@
 
 // DEFINITIONS //
 
-#define VALID_FILE_EXTENSION "bs"
-#define ERROR_NONE			  0
-#define ERROR_FILE_NOT_FOUND -1
-#define ERROR_PROGRAM_SYNTAX -2
+#define TRUE 1
+#define FALSE 0
+
+#define VALID_FILE_EXTENSION	"bs"
+#define KEEP_SOURCE_FLAG		"-s"
+#define ERROR_NONE				0
+#define ERROR_FILE_NOT_FOUND	-1
+#define ERROR_PROGRAM_SYNTAX	-2
 
 #define TEXT_COLOR_PREFIX "\033"
 #define TEXT_COLOR_RED TEXT_COLOR_PREFIX "[1;31m"
@@ -56,6 +60,10 @@ typedef struct syntax_logs_t {
 	size_t length;
 	char (*messages)[256];
 } syntax_logs_t;
+
+// GLOBAL VARIABLES //
+
+unsigned char keep_source = FALSE;	// If TRUE, generated C code will not be deleted
 
 
 // FUNCTIONS //

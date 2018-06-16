@@ -13,13 +13,28 @@
 int main(int argc, char *args[]) {
 	printf(TEXT_COLOR_CYAN "=== Bull$hit! Compiler v1.0 ===\n");
 	if (argc == 1) {
-		printf(TEXT_COLOR_RED "Error: " TEXT_COLOR_RESET "No input files specified...\n");
+		printf(TEXT_COLOR_RED "Error: " TEXT_COLOR_RESET "No arguments specified...\n");
+		exit(EXIT_FAILURE);
+	}
+	else if (argc > 3) {
+		printf(TEXT_COLOR_RED "Error: " TEXT_COLOR_RESET "Too many arguments!\n");
 		exit(EXIT_FAILURE);
 	}
 	else{
-		int i;
-		for (i = 1; i < argc; i++) {
-			char *filepath = args[i];	// Copy filepath
+		int offset = 1;
+		
+		// Check if user requests generated C code be left alone
+		if (strcmp(args[1], KEEP_SOURCE_FLAG) == 0) {
+			keep_source = TRUE;	// Set the keep source boolean
+			offset++;	// Increment to next argument
+		}
+		
+		if (offset == argc) {
+			printf(TEXT_COLOR_RED "Error: " TEXT_COLOR_RESET "No input files given...\n");
+			exit(EXIT_FAILURE);
+		}
+		else{
+			char *filepath = args[offset];	// Copy filepath
 			
 			// Check file extension
 			const char *ext = get_extension(filepath);
@@ -46,23 +61,27 @@ int main(int argc, char *args[]) {
 						printf(TEXT_COLOR_RED "Error: " TEXT_COLOR_RESET "Input file %s has syntax errors!\n", filepath);
 						
 						print_logs(&logs);	// Print syntax logs
-						delete_logs(&logs);	// Free log memory
 					}
 				}
 				else {
 					if (prgm.length == 0) {
 						printf(TEXT_COLOR_RESET "Input file %s is empty...\n", filepath);
-						continue;
 					}
+					else {
+						printf(TEXT_COLOR_RESET "Compiling %s...\n", prgm.name);
 					
-					printf(TEXT_COLOR_RESET "Compiling %s...\n", prgm.name);
-					// Compile the program here
-					compile_program(&prgm);
+						// Compile the program here
+						compile_program(&prgm);
 					
-					printf(TEXT_COLOR_RESET "%s compiled successfully!\n", prgm.name);
-					
-					delete_program(&prgm);	// Free memory of program
+						printf(TEXT_COLOR_RESET "%s compiled successfully!\n", prgm.name);
+					}
 				}
+				
+				if (prgm.cmds != NULL)
+					delete_program(&prgm);	// Free memory of program
+					
+				if (logs.messages != NULL)
+					delete_logs(&logs);	// Free log memory
 			}
 		}
 	}
@@ -101,8 +120,7 @@ program_t create_program(char *filepath, int *error_code, syntax_logs_t *logs) {
 		program_t program;	// The program structure
 		
 		// Set the program name
-		char *ext = strrchr(filepath, '.');
-		strncpy(program.name, filepath, ext - filepath);
+		strncpy(program.name, filepath, strlen(filepath) - 3);
 		
 		// Get the file's length in bytes
 		int code = fseek(file, 0L, SEEK_END);
@@ -314,69 +332,79 @@ void compile_program(const program_t *program) {
 	for (i = offset; i < program->length; i++) {
 		char cmd = program->cmds[i];
 		
-		indenter(file, indent_depth);	// Create clean indents
-		
 		switch(cmd){
 			case CMD_UP:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("y = y - 1; if (y < 0) y = height - 1;\n", file); // Move up (with wrap around)
 				indenter(file, indent_depth);
 				fputs("if (is_held) curr_value -= memory[y][x];\n\n", file);	// Handle up subtraction
 				break;
 			case CMD_DOWN:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("y = y + 1; if (y == height) y = 0;\n", file);	// Move down (with wrap around)
 				indenter(file, indent_depth);
 				fputs("if (is_held) curr_value += memory[y][x];\n\n", file);	// Handle down addition
 				break;
 			case CMD_LEFT:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("x = x - 1; if (x < 0) x = width - 1;\n", file);	// Move left (with wrap around)
 				indenter(file, indent_depth);
 				fputs("if (is_held) curr_value -= memory[y][x];\n\n", file);	// Handle left subtraction
 				break;
 			case CMD_RIGHT:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("x = x + 1; if (x == width) x = 0;\n", file);	// Move right (with wrap around)
 				indenter(file, indent_depth);
 				fputs("if (is_held) curr_value += memory[y][x];\n\n", file);	// Handle right addition
 				break;
 			case CMD_NOT:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("assert(is_held == 1);\n", file);
 				indenter(file, indent_depth);
 				fputs("curr_value = !curr_value;\n\n", file);
 				break;
 			case CMD_INVERT:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("assert(is_held == 1);\n", file);
 				indenter(file, indent_depth);
 				fputs("curr_value = ~curr_value;\n\n", file);
 				break;
 			case CMD_PICKUP:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("is_held = 1;\n", file);
 				indenter(file, indent_depth);
 				fputs("curr_value = memory[y][x];\n\n", file);
 				break;
 			case CMD_DROP:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("is_held = 0;\n", file);
 				indenter(file, indent_depth);
 				fputs("memory[y][x] = curr_value;\n\n", file);
 				break;
 			case CMD_LOOP_S:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("while(memory[y][x] != 0){\n", file);
 				indent_depth++;
 				break;
 			case CMD_LOOP_E:
-				fputs("\n", file);
 				indent_depth--;
 				indenter(file, indent_depth);
 				fputs("}\n\n", file);
 				break;
 			case CMD_IN_CHR:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("scanf(\" %c\", &memory[y][x]);\n\n", file);
 				break;
 			case CMD_OUT_CHR:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("printf(\"%c\", memory[y][x]);\n\n", file);
 				break;
 			case CMD_IN_HEX:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("scanf(\"%hhx\", &memory[y][x]);\n\n", file);
 				break;
 			case CMD_OUT_HEX:
+				indenter(file, indent_depth);	// Create clean indents
 				fputs("printf(\"%x\", memory[y][x]);\n\n", file);
 				break;
 			default:
@@ -391,7 +419,7 @@ void compile_program(const program_t *program) {
 	fputs("\t}\n", file);
 	fputs("\n\tfree(memory);\n", file);
 	
-	fputs("printf(\"\\n\");\n", file);
+	fputs("\tprintf(\"\\n\");\n", file);
 	
 	fputs("}\n", file);
 	
@@ -406,10 +434,13 @@ void compile_program(const program_t *program) {
 	printf("%s\n", sys_cmd);
 	system(sys_cmd);	// Compile the code
 	
-	sys_cmd[0] = '\0';
-	strcpy(sys_cmd, "rm -f ");
-	strcat(sys_cmd, source_file);
-	system(sys_cmd);	// Delete C file
+	// If the user did not request to keep the C code, delete it
+	if (keep_source == FALSE) {
+		sys_cmd[0] = '\0';
+		strcpy(sys_cmd, "rm -f ");
+		strcat(sys_cmd, source_file);
+		system(sys_cmd);	// Delete C file
+	}
 }
 
 void delete_program(program_t *program) {
