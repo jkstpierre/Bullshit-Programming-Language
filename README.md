@@ -47,7 +47,7 @@ Bull$hit! borrows heavily from Brainfuck in the usage of an unambiguous and simp
 The examples folder contains several documented Bull$hit! programs for you to learn from. If you develop a program that you wish to showcase there feel free to let me know!
 
 ## Installation & Usage
-Included in this repository is a working Bull$hit! compiler written in C. This program is a work in progress, but at the moment is capable of basic syntax checking as well as converting your Bull$hit! programs into equivalent C code and compiling down to machine code using gcc. 
+Included in this [repository](https://github.com/jkstpierre/Bullshit-Programming-Language) is a working Bull$hit! compiler written in C. This program is a work in progress, but at the moment is capable of basic syntax checking as well as converting your Bull$hit! programs into equivalent C code and compiling down to machine code using gcc. 
 
 On Unix systems to install the Bull$hit! compiler enter the following into a terminal:
 ```
